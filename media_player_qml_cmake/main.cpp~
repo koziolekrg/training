@@ -1,0 +1,43 @@
+#include <QGuiApplication>
+#include <QQmlContext>
+#include <QQmlApplicationEngine>
+#include <QQuickView>
+#include <QVector>
+#include "mediaplayer.h"
+#include <gtest/gtest.h>
+
+TEST(volumeTest, checkDefaultVolume){
+	MediaPlayer player;
+	ASSERT_EQ(50, player.getVolume());
+}
+
+TEST(volumeTest, checkSetAndGetVolume){
+	MediaPlayer player;
+	player.setVolume(50);
+	ASSERT_EQ(50, player.getVolume());
+}
+
+TEST(progresTest, checkDefaultProgress){
+	MediaPlayer player;
+	ASSERT_EQ(0, player.getProgress());
+}
+
+TEST(progresTest, checkSetAndGetProgress){
+	MediaPlayer player;
+	player.setProgress(10500);
+	ASSERT_EQ(10500, player.getProgress());
+}
+
+TEST(playerTest, checkAddSong){
+	MediaPlayer player;
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	//player.mediaPlay();
+	ASSERT_EQ("/home/pako/Downloads/Coldplay - Viva La Vida.mp3", player.getTitle());
+}
+
+
+int main(int argc, char *argv[])
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}

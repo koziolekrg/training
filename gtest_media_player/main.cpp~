@@ -1,0 +1,110 @@
+#include <QGuiApplication>
+#include <QQmlContext>
+#include <QQmlApplicationEngine>
+#include <QQuickView>
+#include <QVector>
+#include "mediaplayer.h"
+#include <gtest/gtest.h>
+
+TEST(volumeTest, checkDefaultVolume){
+	MediaPlayer player;
+	ASSERT_EQ(50, player.getVolume());
+}
+
+TEST(volumeTest, checkSetAndGetVolume){
+	MediaPlayer player;
+	player.setVolume(50);
+	ASSERT_EQ(50, player.getVolume());
+}
+
+TEST(progresTest, checkDefaultProgress){
+	MediaPlayer player;
+	ASSERT_EQ(0, player.getProgress());
+}
+
+TEST(progresTest, checkSetAndGetProgress){
+	MediaPlayer player;
+	player.setProgress(10500);
+	ASSERT_EQ(10500, player.getProgress());
+}
+
+TEST(playerTest, checkSongIsPlaying){
+	MediaPlayer player;
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.mediaPlay();
+	ASSERT_EQ(1, player.playerStatus());
+}
+
+TEST(playerTest, checkSongIsStopped){
+	MediaPlayer player;
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.mediaPlay();
+	player.mediaStop();
+	ASSERT_EQ(0, player.playerStatus());
+}
+
+TEST(playerTest, checkSongCountAdding){
+	MediaPlayer player;
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	ASSERT_EQ(3, player.m_playlist->mediaCount());
+}
+
+TEST(playerTest, checkSongCountRemoving){
+	MediaPlayer player;
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.mediaRemove(2);
+	ASSERT_EQ(2, player.m_playlist->mediaCount());
+}
+
+TEST(playerTest, checkIsPlaylistyEmpty){
+	MediaPlayer player;
+	ASSERT_TRUE(player.m_playlist->isEmpty());
+}
+
+TEST(playerTest, checkJumpToSong){
+	MediaPlayer player;
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.mediaJump(2);
+	ASSERT_EQ(2, player.m_playlist->currentIndex());	
+}
+
+TEST(playerTest, checkNextToSong){
+	MediaPlayer player;
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.mediaPlay();
+	player.mediaNext();
+	ASSERT_EQ(1, player.m_playlist->currentIndex());	
+}
+
+TEST(playerTest, checkPreviousToSong){
+	MediaPlayer player;
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.mediaJump(2);
+	player.mediaPrevious();
+	ASSERT_EQ(1, player.m_playlist->currentIndex());	
+}
+
+TEST(playerTest, checkChangeProgressSong){
+	MediaPlayer player;
+	player.setFileUrl("/home/pako/Downloads/Coldplay - Viva La Vida.mp3");
+	player.mediaPlay();
+	player.changeProgress(4000);
+	ASSERT_EQ(4000, player.getProgress());	
+}
+
+
+
+int main(int argc, char *argv[])
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
