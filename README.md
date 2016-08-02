@@ -1,8 +1,7 @@
 
 
 
-Hello in my REPO :)
-	made for Mobica Intership
+Hello in my trainig REPO :)
 
 1. library : is c++ project with small library application
 
